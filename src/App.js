@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import TodoForm from './TodoForm';
 import TodoList from './TodoList';
+import './App.css';
 
 function App() {
   const [todos, setTodos] = useState([]);
@@ -22,8 +23,17 @@ function App() {
 
   // Delete a to-do
   const deleteTodo = (id) => {
-    setTodos(todos.filter((todo) => todo.id !== id));
+    const updatedTodos = todos.map((todo) =>
+      todo.id === id ? { ...todo, removing: true } : todo
+    );
+    setTodos(updatedTodos);
+  
+    // Delay the removal to allow the animation to complete
+    setTimeout(() => {
+      setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
+    }, 200);
   };
+  
 
   return (
     <div className="App">
